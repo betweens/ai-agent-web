@@ -1,50 +1,62 @@
-@import 'tailwindcss';
+/*
+ * 全局样式入口（被 +layout.svelte 引入）
+ * 职责：拉齐 Tailwind / 组件库 / 字体，再定义亮暗色主题变量
+ */
+
+/* —— 基础依赖 —— */
+@import 'tailwindcss'; /* Tailwind v4 本体 */
+@import 'tw-animate-css'; /* 常用动画工具类 */
+@import 'shadcn-svelte/tailwind.css'; /* shadcn-svelte 组件用的样式钩子 */
+@import '@fontsource-variable/inter'; /* 正文可变字体 Inter */
+@import '@fontsource/fira-mono'; /* 等宽字体，写代码块用 */
+
+/* Tailwind 插件：表单样式、文章排版 */
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
-@import '@fontsource/fira-mono';
-@import "tw-animate-css";
-@import "shadcn-svelte/tailwind.css";
-@import "@fontsource-variable/inter";
 
+/* 祖先带 .dark 时启用暗色变体，例如 dark:bg-xxx */
 @custom-variant dark (&:is(.dark *));
 
+/* —— 浅色主题色板（默认） —— */
+/* 颜色用 oklch：观感更稳；改主题主要改这里的变量 */
 :root {
-	--font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	--font-mono: 'Fira Mono', monospace;
-	--color-bg-0: rgb(202, 216, 228);
-	--color-bg-1: hsl(209, 36%, 86%);
-	--color-bg-2: hsl(224, 44%, 95%);
-	--color-theme-1: #ff3e00;
-	--color-theme-2: #4075a6;
-	--color-text: rgba(0, 0, 0, 0.7);
-	--column-width: 42rem;
-	--column-margin-top: 4rem;
-	font-family: var(--font-body);
-	color: var(--color-text);
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.511 0.096 186.391);
-	--primary-foreground: oklch(0.984 0.014 180.72);
-	--secondary: oklch(0.967 0.001 286.375);
-	--secondary-foreground: oklch(0.21 0.006 285.885);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.511 0.096 186.391);
+	--background: oklch(1 0 0); /* 页面大背景 */
+	--foreground: oklch(0.145 0 0); /* 主文字 */
+
+	--card: oklch(1 0 0); /* 卡片底 */
+	--card-foreground: oklch(0.145 0 0); /* 卡片字 */
+
+	--popover: oklch(1 0 0); /* 弹出层底 */
+	--popover-foreground: oklch(0.145 0 0); /* 弹出层字 */
+
+	--primary: oklch(0.511 0.096 186.391); /* 主色（按钮等） */
+	--primary-foreground: oklch(0.984 0.014 180.72); /* 主色上的字 */
+
+	--secondary: oklch(0.967 0.001 286.375); /* 次要按钮底 */
+	--secondary-foreground: oklch(0.21 0.006 285.885); /* 次要按钮字 */
+
+	--muted: oklch(0.97 0 0); /* 弱化区域底 */
+	--muted-foreground: oklch(0.556 0 0); /* 弱化文字（说明、占位） */
+
+	--accent: oklch(0.511 0.096 186.391); /* 强调色，hover 等 */
 	--accent-foreground: oklch(0.984 0.014 180.72);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
+
+	--destructive: oklch(0.577 0.245 27.325); /* 危险操作（删除） */
+
+	--border: oklch(0.922 0 0); /* 边框 */
+	--input: oklch(0.922 0 0); /* 输入框边框 */
+	--ring: oklch(0.708 0 0); /* 焦点光圈 */
+
+	/* 图表系列色，从浅到深 */
 	--chart-1: oklch(0.855 0.138 181.071);
 	--chart-2: oklch(0.704 0.14 182.503);
 	--chart-3: oklch(0.6 0.118 184.704);
 	--chart-4: oklch(0.511 0.096 186.391);
 	--chart-5: oklch(0.437 0.078 188.216);
-	--radius: 0.625rem;
+
+	--radius: 0.625rem; /* 圆角基准，组件圆角都围着它算 */
+
+	/* 侧边栏专用（和主内容可以略有差别） */
 	--sidebar: oklch(0.985 0 0);
 	--sidebar-foreground: oklch(0.145 0 0);
 	--sidebar-primary: oklch(0.6 0.118 184.704);
@@ -55,115 +67,41 @@
 	--sidebar-ring: oklch(0.708 0 0);
 }
 
-body {
-	min-height: 100vh;
-	margin: 0;
-	background-attachment: fixed;
-	background-color: var(--color-bg-1);
-	background-size: 100vw 100vh;
-	background-image: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%), linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
-}
-
-h1,
-h2,
-p {
-	font-weight: 400;
-}
-
-p {
-	line-height: 1.5;
-}
-
-a {
-	color: var(--color-theme-1);
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-h1 {
-	font-size: 2rem;
-	text-align: center;
-}
-
-h2 {
-	font-size: 1rem;
-}
-
-pre {
-	font-size: 16px;
-	font-family: var(--font-mono);
-	background-color: rgba(255, 255, 255, 0.45);
-	border-radius: 3px;
-	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
-	padding: 0.5em;
-	overflow-x: auto;
-	color: var(--color-text);
-}
-
-.text-column {
-	display: flex;
-	max-width: 48rem;
-	flex: 0.6;
-	flex-direction: column;
-	justify-content: center;
-	margin: 0 auto;
-}
-
-input,
-button {
-	font-size: inherit;
-	font-family: inherit;
-}
-
-button:focus:not(:focus-visible) {
-	outline: none;
-}
-
-@media (min-width: 720px) {
-	h1 {
-		font-size: 2.4rem;
-	}
-}
-
-.visually-hidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: auto;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px;
-	white-space: nowrap;
-}
-
+/* —— 暗色主题：给 html/body 加 class="dark" 就切过来 —— */
 .dark {
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
+
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);
+
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
+
 	--primary: oklch(0.437 0.078 188.216);
 	--primary-foreground: oklch(0.984 0.014 180.72);
+
 	--secondary: oklch(0.274 0.006 286.033);
 	--secondary-foreground: oklch(0.985 0 0);
+
 	--muted: oklch(0.269 0 0);
 	--muted-foreground: oklch(0.708 0 0);
+
 	--accent: oklch(0.437 0.078 188.216);
 	--accent-foreground: oklch(0.984 0.014 180.72);
+
 	--destructive: oklch(0.704 0.191 22.216);
+
 	--border: oklch(1 0 0 / 10%);
 	--input: oklch(1 0 0 / 15%);
 	--ring: oklch(0.556 0 0);
+
 	--chart-1: oklch(0.855 0.138 181.071);
 	--chart-2: oklch(0.704 0.14 182.503);
 	--chart-3: oklch(0.6 0.118 184.704);
 	--chart-4: oklch(0.511 0.096 186.391);
 	--chart-5: oklch(0.437 0.078 188.216);
+
 	--sidebar: oklch(0.205 0 0);
 	--sidebar-foreground: oklch(0.985 0 0);
 	--sidebar-primary: oklch(0.704 0.14 182.503);
@@ -174,8 +112,13 @@ button:focus:not(:focus-visible) {
 	--sidebar-ring: oklch(0.556 0 0);
 }
 
+/*
+ * 把上面的 CSS 变量登记进 Tailwind 主题
+ * 登记后才能写 bg-background、text-primary、rounded-lg 这类工具类
+ */
 @theme inline {
 	--font-sans: 'Inter Variable', sans-serif;
+
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -184,11 +127,13 @@ button:focus:not(:focus-visible) {
 	--color-sidebar-primary: var(--sidebar-primary);
 	--color-sidebar-foreground: var(--sidebar-foreground);
 	--color-sidebar: var(--sidebar);
+
 	--color-chart-5: var(--chart-5);
 	--color-chart-4: var(--chart-4);
 	--color-chart-3: var(--chart-3);
 	--color-chart-2: var(--chart-2);
 	--color-chart-1: var(--chart-1);
+
 	--color-ring: var(--ring);
 	--color-input: var(--input);
 	--color-border: var(--border);
@@ -207,6 +152,8 @@ button:focus:not(:focus-visible) {
 	--color-card: var(--card);
 	--color-foreground: var(--foreground);
 	--color-background: var(--background);
+
+	/* 圆角阶梯：sm → 4xl，都相对 --radius 缩放 */
 	--radius-sm: calc(var(--radius) * 0.6);
 	--radius-md: calc(var(--radius) * 0.8);
 	--radius-lg: var(--radius);
@@ -216,6 +163,7 @@ button:focus:not(:focus-visible) {
 	--radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* —— 全局底色：边框默认色、页面背景、正文字体 —— */
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -226,4 +174,12 @@ button:focus:not(:focus-visible) {
 	html {
 		@apply font-sans;
 	}
+}
+
+@layer utilities {
+
+}
+
+@layer components {
+
 }
