@@ -6,7 +6,8 @@
 	import RiCloseLine from 'remixicon-svelte/icons/close-line';
 	import * as Attachment from "#lib/components/ui/attachment/index.js";
 	import * as InputGroup from "#lib/components/ui/input-group/index.js";
- 
+  import { chat } from '#lib/stores/chat-stores.svelte.ts';
+
 	type AttachmentFile = {
 		id: string;
 		name: string;
@@ -24,7 +25,10 @@
 			return;
 		}
  
-		text = "";
+
+		console.log(text);
+		chat.sendMessage(text);
+	  text = "";
 		files = [];
 	}
  
