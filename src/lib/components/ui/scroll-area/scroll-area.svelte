@@ -10,6 +10,7 @@
 		orientation = "vertical",
 		scrollbarXClasses = "",
 		scrollbarYClasses = "",
+		onviewportscroll,
 		children,
 		...restProps
 	}: WithoutChild<ScrollAreaPrimitive.RootProps> & {
@@ -17,6 +18,8 @@
 		scrollbarXClasses?: string | undefined;
 		scrollbarYClasses?: string | undefined;
 		viewportRef?: HTMLElement | null;
+		/** 视口滚动。滚动事件不冒泡，所以不能挂在外层 Root 上 */
+		onviewportscroll?: ((event: Event) => void) | undefined;
 	} = $props();
 </script>
 
@@ -30,6 +33,7 @@
 		bind:ref={viewportRef}
 		data-slot="scroll-area-viewport"
 		class="size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
+		onscroll={onviewportscroll}
 	>
 		{@render children?.()}
 	</ScrollAreaPrimitive.Viewport>
